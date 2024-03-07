@@ -18,8 +18,6 @@ type Config struct {
 }
 
 func (n *NATS) OpenConn(config any) error {
-	// we will need url, authentication and likely more but keep simple for now
-	// we will expect a map here for using interface to keep flexible
 	var conf Config
 	var ok bool
 
