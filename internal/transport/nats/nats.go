@@ -1,4 +1,4 @@
-package nats
+package natsTransport
 
 import (
 	"fmt"
@@ -12,9 +12,9 @@ type NATS struct {
 }
 
 type Config struct {
-	server string
-	port   string
-	auth   string //TODO unlikely to be a string, but no auth for now
+	Server string
+	Port   string
+	Auth   string //TODO unlikely to be a string, but no auth for now
 }
 
 func (n *NATS) OpenConn(config any) error {
@@ -25,14 +25,14 @@ func (n *NATS) OpenConn(config any) error {
 		return transport.ERR_BAD_TYPE
 	}
 
-	if conf.server == "" || conf.port == "" {
+	if conf.Server == "" || conf.Port == "" {
 		return transport.ERR_BAD_CONFIG
 	}
 
 	// store config just in case
 	n.conf = conf
 
-	natsUrl := fmt.Sprintf("nats://%s:%s", n.conf.server, n.conf.port)
+	natsUrl := fmt.Sprintf("nats://%s:%s", n.conf.Server, n.conf.Port)
 	conn, err := nats.Connect(natsUrl)
 	if err != nil {
 		return err
