@@ -7,8 +7,8 @@ import (
 )
 
 type NATS struct {
-	conn *nats.Conn
-	conf Config
+	Conn *nats.Conn
+	Conf Config
 }
 
 type Config struct {
@@ -30,27 +30,32 @@ func (n *NATS) OpenConn(config any) error {
 	}
 
 	// store config just in case
-	n.conf = conf
+	n.Conf = conf
 
-	natsUrl := fmt.Sprintf("nats://%s:%s", n.conf.Server, n.conf.Port)
+	natsUrl := fmt.Sprintf("nats://%s:%s", n.Conf.Server, n.Conf.Port)
 	conn, err := nats.Connect(natsUrl)
 	if err != nil {
 		return err
 	}
 
 	// store the connection value
-	n.conn = conn
+	n.Conn = conn
 
 	return nil
 }
 
 func (n *NATS) Compose(raw any) ([]byte, error) {
 	// TODO do we need an interface for raw??
-	return []byte{}, nil
+	var input string
+	var ok bool
+	if input, ok = raw.(string); !ok {
+		return nil, transport.ERR_BAD_COMPOSE
+	}
+	return []byte(input), nil
 }
 
 func (n *NATS) Publish(target string, message []byte) error {
-	err := n.conn.Publish(target, message)
+	err := n.Conn.Publish(target, message)
 	if err != nil {
 		return err
 	}
@@ -58,7 +63,7 @@ func (n *NATS) Publish(target string, message []byte) error {
 }
 
 func (n *NATS) CloseConn() error {
-	n.conn.Close()
+	n.Conn.Close()
 	// error not implemented in NATS conn close
 	return nil
 }

@@ -4,8 +4,9 @@ import "errors"
 
 var (
 	// helpers to be used by transport packages
-	ERR_BAD_TYPE   = errors.New("config is not of the correct type")
-	ERR_BAD_CONFIG = errors.New("required config is missing, please check")
+	ERR_BAD_TYPE    = errors.New("config is not of the correct type")
+	ERR_BAD_CONFIG  = errors.New("required config is missing, please check")
+	ERR_BAD_COMPOSE = errors.New("raw message is not of expected type")
 )
 
 // Transport is an interface to be implemented by any transport
